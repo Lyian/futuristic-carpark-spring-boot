@@ -20,5 +20,4 @@ class Car{
 	var level: Int? = null
 	val enteredAt : LocalDateTime? = null
 	var leftAt : LocalDateTime? = null
-	
 }

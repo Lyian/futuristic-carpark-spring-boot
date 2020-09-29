@@ -2,12 +2,17 @@ package energy.uniper.futuristiccarparkspringboot.controller
 
 import energy.uniper.futuristiccarparkspringboot.model.Car
 import energy.uniper.futuristiccarparkspringboot.repository.CarRepository
+import energy.uniper.futuristiccarparkspringboot.service.CarParkService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/api/car")
-class CarController(val carRepository: CarRepository){
+class CarController (
+	val carRepository: CarRepository,
+	val carParkService: CarParkService
+){
 	
 	@PostMapping("/")
 	fun createNewCar(@RequestParam id: Long): Optional<Car> {
@@ -18,6 +23,11 @@ class CarController(val carRepository: CarRepository){
 	@GetMapping("/")
 	fun getAllCars(): MutableIterable<Car> {
 		return carRepository.findAll()
+	}
+	
+	@GetMapping("/parkAll")
+	fun parkAllCars(){
+		carParkService.parkCar()
 	}
 	
 	@GetMapping("/{id}")
@@ -34,4 +44,6 @@ class CarController(val carRepository: CarRepository){
 			return carRepository.delete(car.get())
 		}
 	}
+	
+	
 }

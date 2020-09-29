@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     jdbcUrl: jdbc:h2:~/flyway;
@@ -18,3 +19,6 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: default
+
+server:
+  port: 8090
