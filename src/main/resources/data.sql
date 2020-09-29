@@ -1,0 +1,1 @@
+INSERT INTO car (brand, type, idPlate, owner, value, isPartyMember, toControll, status, enteredAt, leftAt) values ('VW', 'test', 'LEV FE 17', 'Carl Sagan', 102000, true, false, 'entered' ,'2012-09-17T18:47:52.069','2012-09-17T18:47:52.069')
