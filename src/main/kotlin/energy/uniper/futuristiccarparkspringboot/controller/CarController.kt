@@ -22,6 +22,16 @@ class CarController(val carRepository: CarRepository){
 	
 	@GetMapping("/{id}")
 	fun getCarByID(@PathVariable id: Long): Optional<Car> {
-		return carRepository.findById(id)
+		val car = carRepository.findById(id)
+		return car
+	}
+	
+	@DeleteMapping("/{id}")
+	fun removeCarFromCarPark(@PathVariable id: Long){
+		val car = carRepository.findById(id)
+		if(car.isPresent){
+			println("Car ${car.get().id} left carpark.")
+			return carRepository.delete(car.get())
+		}
 	}
 }
