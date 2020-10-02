@@ -11,13 +11,11 @@ import kotlin.math.sqrt
 class Level (val levelId: Int){
 	// Die Position in der Liste gibt die id des Parkplatzes an.
 	val listParkinglots = mutableListOf<Car>()
-
 	val numberOfParkingLots = 20
 
 	fun calculatePriceForLevel(car: Car) : Double {
-
+		// Leerzeilen löschen
 		val durationInHours = Duration.between(car.enteredAt, car.leftAt).toHours()
-
 		return durationInHours * sqrt(this.levelId.toDouble())
 	}
 	

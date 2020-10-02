@@ -5,8 +5,9 @@ class CarPark {
     val levels = mutableListOf<Level>()
 
     init {
-        for (i in 0..10) {
-            levels.add(Level(i))
+        // i ist nicht aussagekräftig
+        for (level in 0..10) {
+            levels.add(Level(level))
         }
     }
 

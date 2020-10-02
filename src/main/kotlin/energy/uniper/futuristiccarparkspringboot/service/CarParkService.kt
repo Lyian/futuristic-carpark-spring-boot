@@ -15,54 +15,66 @@ class CarParkService(val carRepository: CarRepository) {
 
 	fun parkCar(){
 		val carList = carRepository.findAll()
+		val amountOfLevels = carPark.levels.size
 
 		for(car in carList){
-			val levelOfCurrentCar = determineLevel(car)
-			if(levelOfCurrentCar < carPark.levels.size){
+			val levelOfCurrentCar = determineParkedLevel(car)
+			if(levelOfCurrentCar < amountOfLevels){
 				carPark.levels[levelOfCurrentCar].addCar(car)
-			} else {
+				markCarForControl(car)
+			}
+			// else in die nächste Zeile
+			else {
 				car.status = CarStatus.NOSLOTS
 				//TODO Auto kann nicht geparkt werden
 				println("Voll!!")
 			}
 		}
-
 		carRepository.saveAll(carList)
 	}
 
-	fun determineLevel(car: Car) : Int{
-		var level: Int = 99
-
+	// Die Funktion tut 2 Dinge - initial und determinedLevel bestimmen -> in 2 Funktionen auslagern
+	fun determineInitialLevel(car: Car) : Int{
+		// level ist ein objekt - var umbenennen
+		var initialLevel: Int = 99
 
 		if (car.value!! > 100000 || car.isPartyMember!!){
-			level = 0
+			initialLevel = 0
 		} else{
-			level = ((10 - kotlin.math.floor(car.value / 10000)).toInt())
+			initialLevel = ((10 - kotlin.math.floor(car.value / 10000)).toInt())
 		}
-		val initialLevel = level
+		// parkedLevel in neue Funktion verschoben
+		// markCarForControl gehört nicht zur Bestimmung eines Leves - Verschieben zur Park-Prozedur
 
-		while (carPark.levels[level].isLevelFull()) {
-
-			if(level < carPark.levels.size){
-				level += 1
-			} else {
-				return 99
-			}
-
-		}
-
-		markCarForControl(car, initialLevel, level)
-
-		return level
+		return initialLevel
 	}
 
-	fun markCarForControl(car: Car, initialLevel: Int, level: Int){
+	fun determineParkedLevel(car : Car) : Int{
+		val initialLevel = determineInitialLevel(car)
+		var parkedLevel = initialLevel
 
+		while (carPark.levels[parkedLevel].isLevelFull()) {
+			if(parkedLevel < carPark.levels.size){
+				parkedLevel += 1
+			}
+			else {
+				return 99
+			}
+		}
+		return parkedLevel
+	}
+
+
+	// 3 Parameter
+	// level nicht benötigt, da beim parken das level im car objekt abgespeichert wird
+	// initialLevel nicht benötigt, da über determineLevel aufrufbar
+	fun markCarForControl(car: Car){
+		val initialLevel = determineInitialLevel(car)
 		val eps = Random.nextDouble(0.0,1.0)
 
-		if(level == 0 && !car.isPartyMember!! && eps <= 0.001){
+		if(car.level == 0 && !car.isPartyMember!! && eps <= 0.001){
 			car.toControll = true
-		} else car.toControll = initialLevel > 4 && eps <= 0.01 * level
+		} else car.toControll = initialLevel > 4 && eps <= 0.01 * car.level!!
 
 	}
 	
