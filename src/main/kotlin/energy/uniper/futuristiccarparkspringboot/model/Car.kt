@@ -18,6 +18,6 @@ class Car{
 	@Enumerated(EnumType.STRING)
 	var status: CarStatus? = null
 	var level: Int? = null
-	val enteredAt : LocalDateTime? = null
+	var enteredAt : LocalDateTime? = null
 	var leftAt : LocalDateTime? = null
 }

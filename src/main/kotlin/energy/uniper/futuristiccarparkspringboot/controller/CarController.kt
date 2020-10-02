@@ -3,7 +3,6 @@ package energy.uniper.futuristiccarparkspringboot.controller
 import energy.uniper.futuristiccarparkspringboot.model.Car
 import energy.uniper.futuristiccarparkspringboot.repository.CarRepository
 import energy.uniper.futuristiccarparkspringboot.service.CarParkService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -40,6 +39,7 @@ class CarController (
 	fun removeCarFromCarPark(@PathVariable id: Long){
 		val car = carRepository.findById(id)
 		if(car.isPresent){
+			carParkService.removeCar(car.get())
 			println("Car ${car.get().id} left carpark.")
 			return carRepository.delete(car.get())
 		}
