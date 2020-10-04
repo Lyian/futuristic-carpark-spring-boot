@@ -9,8 +9,8 @@ import javax.persistence.*
 class Car{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	val id: Long? = null
-	val idPlate: String? = null
+	var id: Long? = null
+	var idPlate: String? = null
 	val owner: String? = null
 	val value: Double? = null
 	val isPartyMember: Boolean? = null
@@ -18,6 +18,6 @@ class Car{
 	@Enumerated(EnumType.STRING)
 	var status: CarStatus? = null
 	var level: Int? = null
-	val enteredAt : LocalDateTime? = null
+	var enteredAt : LocalDateTime? = null
 	var leftAt : LocalDateTime? = null
 }
