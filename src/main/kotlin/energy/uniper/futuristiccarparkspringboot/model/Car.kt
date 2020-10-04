@@ -11,9 +11,9 @@ class Car{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	var id: Long? = null
 	var idPlate: String? = null
-	val owner: String? = null
-	val value: Double? = null
-	val isPartyMember: Boolean? = null
+	var owner: String? = null
+	var value: Double? = null
+	var isPartyMember: Boolean? = null
 	var toControll: Boolean? = null
 	@Enumerated(EnumType.STRING)
 	var status: CarStatus? = null

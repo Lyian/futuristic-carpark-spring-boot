@@ -5,12 +5,16 @@ import energy.uniper.futuristiccarparkspringboot.model.Car
 import energy.uniper.futuristiccarparkspringboot.pojo.Level
 import energy.uniper.futuristiccarparkspringboot.repository.CarRepository
 import org.springframework.stereotype.Component
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.random.Random
 
 @Component
 class CarParkService(val carRepository: CarRepository) {
 
-	var levels = mutableListOf<Level>()
-
+	private val levels = mutableListOf<Level>()
+	private val calculateLevel = {maxLevels: Int, value: Double -> max((maxLevels - floor(value / 10_000)).toInt(),0)}
+	
 	init {
 		for (i in 0..10){
 			levels.add(Level(i))
@@ -19,20 +23,30 @@ class CarParkService(val carRepository: CarRepository) {
 
 	fun parkCar() {
 		val carList = carRepository.findAll()
-		for (targetCar in carList) {
-			getParkingLot(targetCar)
-			if (targetCar.status == CarStatus.NOSLOTS) {
-				println(targetCar.idPlate)
+		for (car in carList) {
+			getParkingLot(car)
+			if (car.status == CarStatus.NOSLOTS) {
+				println("${car.idPlate} could not be parked, because Carpark has no lots available: ${car.value}")
 			}
 			carRepository.saveAll(carList)
 		}
 	}
+	
+	fun removeCarAndGetFee(car: Car): Double{
+		val level = car.level
+		levels[level!!].carIsInLevel(car)
+		car.status = CarStatus.LEFT
+		carRepository.save(car)
+		
+		return levels[level].removeCarAndCalculateFee(car)
+	}
 
 	fun getParkingLot(car: Car): CarStatus {
-		val wishLevel = chooseLevel(car)
-		for (targetLevel in wishLevel..10) {
-			if (levels[targetLevel].parkingLotFree()) {
+		val level = getLevel(car)
+		for (targetLevel in level..10) {
+			if (levels[targetLevel].isParkinglotAvailable) {
 				levels[targetLevel].parkCar(car)
+				setControl(car, calculateLevel(10, car.value!!))
 				car.status = CarStatus.PARKED
 				return CarStatus.PARKED
 			}
@@ -40,31 +54,21 @@ class CarParkService(val carRepository: CarRepository) {
 		car.status = CarStatus.NOSLOTS
 		return CarStatus.NOSLOTS
 	}
-
-
-
-
-	fun chooseLevel(car: Car): Int {
-		if (car.isPartyMember!!) {return 0}
-		var targetLevel = 10 - Math.floor(car.value!! / 100000 * 10)
-		if (targetLevel > 10) {targetLevel = 10.0}
-		if (targetLevel < 0) {targetLevel = 0.0}
-		return targetLevel.toInt()
+	
+	fun getLevel(car: Car): Int {
+		if (car.isPartyMember!!) return 0
+		return calculateLevel(10, car.value!!)
 	}
-
-
-
-	fun payParkingLot(car: Car): Double{
-		val wunschebene = chooseLevel(car)
-		var price = 0.0
-		for (zielebene in wunschebene..10) {
-			if (levels[zielebene].carIsInLevel(car)) {
-				price = levels[zielebene].removeCar(car)
-				car.status = CarStatus.LEFT
-				carRepository.save(car)
-			}
+	
+	 fun setControl(car: Car, actualLevel: Int) {
+		if (car.isPartyMember!!){
+			car.toControll = false
+			return
 		}
-		return price
+		
+		if (actualLevel < 5)
+			car.toControll = 0.01 * actualLevel < Random.nextDouble(0.0, 1.0)
+		else
+			car.toControll = 0.1 * actualLevel < Random.nextDouble(0.0, 1.0)
 	}
-
 }
