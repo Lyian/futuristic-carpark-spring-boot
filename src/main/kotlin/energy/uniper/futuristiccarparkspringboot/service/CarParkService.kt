@@ -16,7 +16,7 @@ class CarParkService(val carRepository: CarRepository) {
 	private val calculateLevel = {maxLevels: Int, value: Double -> max((maxLevels - floor(value / 10_000)).toInt(),0)}
 	
 	init {
-		for (i in 0..10){
+		for (i in 0..9){
 			levels.add(Level(i))
 		}
 	}
@@ -43,7 +43,7 @@ class CarParkService(val carRepository: CarRepository) {
 
 	fun getParkingLot(car: Car): CarStatus {
 		val level = getLevel(car)
-		for (targetLevel in level..10) {
+		for (targetLevel in level..9) {
 			if (levels[targetLevel].isParkinglotAvailable) {
 				levels[targetLevel].parkCar(car)
 				setControl(car, calculateLevel(10, car.value!!))
@@ -67,8 +67,8 @@ class CarParkService(val carRepository: CarRepository) {
 		}
 		
 		if (actualLevel < 5)
-			car.toControll = 0.01 * actualLevel < Random.nextDouble(0.0, 1.0)
+			car.toControll = 0.01 * actualLevel > Random.nextDouble(0.0, 1.0)
 		else
-			car.toControll = 0.1 * actualLevel < Random.nextDouble(0.0, 1.0)
+			car.toControll = 0.1 * actualLevel > Random.nextDouble(0.0, 1.0)
 	}
 }

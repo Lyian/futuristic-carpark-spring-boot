@@ -11,7 +11,6 @@ class Level (private val levelId: Int){
 	private val listParkinglots = mutableListOf<Car>()
 	val isParkinglotAvailable = listParkinglots.count() < 20
 	
-	
 	fun parkCar(car: Car) {
 		addCar(car)
 		car.enteredAt = LocalDateTime.now()
@@ -26,6 +25,7 @@ class Level (private val levelId: Int){
 		println("Price for ${car.idPlate} is ${price}")
 		return price
 	}
+	
 	fun carIsInLevel(car: Car) : Boolean{
 		return listParkinglots.contains(car)
 	}
