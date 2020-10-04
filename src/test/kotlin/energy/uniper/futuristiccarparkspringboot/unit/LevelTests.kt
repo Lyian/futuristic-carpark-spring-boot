@@ -27,7 +27,7 @@ class LevelTests {
 		
 		levelClass.parkCar(sampleCar)
 		
-		assertEquals(levelClass.carIsInLevel(sampleCar), true)
+		assertEquals(true, levelClass.carIsInLevel(sampleCar))
 	}
 	
 	@Test
@@ -35,7 +35,7 @@ class LevelTests {
 		val carRepository = mock(CarRepository::class.java)
 		val carParkService = CarParkService(carRepository)
 		
-		assertEquals(carParkService.getLevel(sampleCar), 1)
+		assertEquals(1, carParkService.getLevel(sampleCar))
 	}
 	
 }
