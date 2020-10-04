@@ -31,11 +31,10 @@ class LevelTests {
 	}
 	
 	@Test
-	fun testSetControll(){
+	fun testLevelOfCar(){
 		val carRepository = mock(CarRepository::class.java)
 		val carParkService = CarParkService(carRepository)
 		
 		assertEquals(1, carParkService.getLevel(sampleCar))
 	}
-	
 }
