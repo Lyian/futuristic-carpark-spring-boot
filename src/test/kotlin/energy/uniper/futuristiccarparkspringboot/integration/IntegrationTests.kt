@@ -17,9 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest
 @AutoConfigureMockMvc
 class IntegrationTests {
-	companion object{
-	
-	}
 	
 	@Autowired
 	private val mvc: MockMvc? = null

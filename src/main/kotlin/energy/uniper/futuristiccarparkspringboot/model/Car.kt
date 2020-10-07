@@ -18,6 +18,7 @@ class Car{
 	@Enumerated(EnumType.STRING)
 	var status: CarStatus? = null
 	var level: Int? = null
+	var price: Double? = null
 	var enteredAt : LocalDateTime? = null
 	var leftAt : LocalDateTime? = null
 }

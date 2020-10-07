@@ -34,12 +34,14 @@ class CarParkService(val carRepository: CarRepository) {
 		return carList.filter { it.status == CarStatus.PARKED }
 	}
 	
-	fun removeCarAndGetFee(car: Car): Double{
+	fun removeCarAndGetFee(car: Car): Car{
 		val level = car.level!!
 		car.status = CarStatus.LEFT
 		carRepository.save(car)
 		
-		return levels[level].removeCarAndCalculateFee(car)
+		val price =  levels[level].removeCarAndCalculateFee(car)
+		car.price = price
+		return car
 	}
 
 	fun getParkingLot(car: Car): CarStatus {

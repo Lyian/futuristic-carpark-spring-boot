@@ -35,10 +35,9 @@ class CarController(
 	}
 
 	@PutMapping("removeCar/{id}")
-	fun payParkingLot(@PathVariable id: Long): Pair <Car, Double> {
+	fun payParkingLot(@PathVariable id: Long): Car {
 		val car = carRepository.findById(id).get()
-		val price = carParkService.removeCarAndGetFee(car)
-		return Pair(car, price)
+		return carParkService.removeCarAndGetFee(car)
 	}
 
 	@DeleteMapping("/{id}")
