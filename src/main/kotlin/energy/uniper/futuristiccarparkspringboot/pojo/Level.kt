@@ -7,27 +7,23 @@ import kotlin.math.round
 import kotlin.math.sqrt
 import kotlin.random.Random
 
-class Level (private val levelId: Int){
+class Level (private val levelId: Int) : InterfaceLevel{
 	private val listParkinglots = mutableListOf<Car>()
-	val isParkinglotAvailable = listParkinglots.count() < 20
+	override val isParkinglotAvailable = listParkinglots.count() < 20
 	
-	fun parkCar(car: Car) {
+	override fun parkCar(car: Car) {
 		addCar(car)
 		car.enteredAt = LocalDateTime.now()
 		car.level = levelId
 		sortAlphabetic()
 	}
 	
-	fun removeCarAndCalculateFee(car: Car): Double{
+	override fun removeCarAndCalculateFee(car: Car): Double {
 		val price = calculatePriceForLevel(car)
 		listParkinglots.remove(car)
 		
 		println("Price for ${car.idPlate} is ${price}")
 		return price
-	}
-	
-	fun carIsInLevel(car: Car) : Boolean{
-		return listParkinglots.contains(car)
 	}
 	
 	private fun calculatePriceForLevel(car: Car) : Double {

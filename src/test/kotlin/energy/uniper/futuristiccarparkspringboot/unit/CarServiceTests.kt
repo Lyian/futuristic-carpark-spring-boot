@@ -9,32 +9,26 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
-import java.time.LocalDateTime
 
-class LevelTests {
+class CarServiceTests {
 	companion object{
-		val sampleCar = Car()
-		val sampleCar2 = Car()
+		private val sampleCar = Car()
+		private val sampleCar2 = Car()
+		val carRepository: CarRepository = mock(CarRepository::class.java)
+		val carParkService = CarParkService(carRepository)
 		@BeforeAll @JvmStatic fun initACars(){
 			sampleCar.id = 1
 			sampleCar.value = 100_001.0
 			sampleCar.idPlate = "TEST 123"
 			sampleCar.isPartyMember = false
 			sampleCar.toControll = false
-			sampleCar.enteredAt = LocalDateTime.now()
 			
 			sampleCar2.isPartyMember = true
 		}
 	}
 	
 	@Test
-	fun testCalculatePriceForLevel(){
-		val level = Level(0)
-		val calculatePriceForLevel = level.javaClass.getDeclaredMethod("calculatePriceForLevel", Car::class.java)
-		calculatePriceForLevel.isAccessible = true
-		
-		val result = calculatePriceForLevel.invoke(level, sampleCar)
-		
-		assertEquals(0.0, result)
+	fun testGetLevelCarAtZero(){
+		assertEquals(0, carParkService.getLevel(sampleCar))
 	}
 }

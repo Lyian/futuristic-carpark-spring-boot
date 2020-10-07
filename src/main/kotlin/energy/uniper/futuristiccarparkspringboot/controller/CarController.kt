@@ -41,7 +41,6 @@ class CarController(
 		return Pair(car, price)
 	}
 
-
 	@DeleteMapping("/{id}")
 	fun removeCarFromCarPark(@PathVariable id: Long){
 		val car = carRepository.findById(id)
