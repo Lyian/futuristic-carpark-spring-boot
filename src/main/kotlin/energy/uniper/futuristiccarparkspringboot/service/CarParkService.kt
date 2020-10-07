@@ -22,7 +22,7 @@ class CarParkService(val carRepository: CarRepository) {
 		}
 	}
 
-	fun parkCar() {
+	fun parkCar() : List<Car> {
 		val carList = carRepository.findAll()
 		for (car in carList) {
 			getParkingLot(car)
@@ -31,6 +31,7 @@ class CarParkService(val carRepository: CarRepository) {
 			}
 		}
 		carRepository.saveAll(carList)
+		return carList.filter { it.status == CarStatus.PARKED }
 	}
 	
 	fun removeCarAndGetFee(car: Car): Double{
@@ -60,7 +61,7 @@ class CarParkService(val carRepository: CarRepository) {
 		return calculateLevel(10, car.value!!)
 	}
 	
-	 fun setControl(car: Car, actualLevel: Int) {
+	fun setControl(car: Car, actualLevel: Int) {
 		if (car.isPartyMember!!){
 			car.toControll = false
 			return

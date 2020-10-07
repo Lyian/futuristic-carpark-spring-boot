@@ -24,8 +24,8 @@ class CarController(
 	}
 	
 	@GetMapping("/parkAll")
-	fun parkAllCars(){
-		carParkService.parkCar()
+	fun parkAllCars() : List<Car>{
+		return carParkService.parkCar()
 	}
 
 	@GetMapping("/{id}")

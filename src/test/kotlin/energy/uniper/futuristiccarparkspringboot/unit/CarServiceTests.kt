@@ -1,5 +1,6 @@
 package energy.uniper.futuristiccarparkspringboot.unit
 
+import energy.uniper.futuristiccarparkspringboot.enum.CarStatus
 import energy.uniper.futuristiccarparkspringboot.model.Car
 import energy.uniper.futuristiccarparkspringboot.pojo.Level
 import energy.uniper.futuristiccarparkspringboot.repository.CarRepository
@@ -22,13 +23,20 @@ class CarServiceTests {
 			sampleCar.idPlate = "TEST 123"
 			sampleCar.isPartyMember = false
 			sampleCar.toControll = false
+			sampleCar.status = CarStatus.REQUESTING
 			
 			sampleCar2.isPartyMember = true
 		}
 	}
 	
 	@Test
-	fun testGetLevelCarAtZero(){
-		assertEquals(0, carParkService.getLevel(sampleCar))
+	fun testParkingACarStatus(){
+		Mockito.`when`(carRepository.findAll()).thenReturn(mutableListOf(sampleCar))
+		
+		val parkedCar = carParkService.parkCar()[0]
+		
+		assertEquals(CarStatus.PARKED, parkedCar.status)
 	}
 }
+
+

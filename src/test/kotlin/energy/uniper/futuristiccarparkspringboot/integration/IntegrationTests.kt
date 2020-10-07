@@ -10,12 +10,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class IntegrationTests() {
+class IntegrationTests {
+	companion object{
+	
+	}
 	
 	@Autowired
 	private val mvc: MockMvc? = null
@@ -25,13 +29,10 @@ class IntegrationTests() {
 	
 	@Test
 	fun testParkedCarsExists(){
-		mvc!!.perform(get("http://localhost:8080/api/car/parkAll")).andExpect(status().isOk)
-		val allCars = carRepository!!.findAll().filter { it.status == CarStatus.PARKED }
-		
-		Assertions.assertFalse(allCars::isEmpty)
+		mvc!!.perform(get("http://localhost:8080/api/car/parkAll")).andExpect(status().isOk).andExpect(jsonPath("$").exists())
 	}
 	
-	@Test
+	@Test // diskussion in memory database vs dockerized real database
 	fun testNoSlotsCarsExists(){
 		mvc!!.perform(get("http://localhost:8080/api/car/parkAll")).andExpect(status().isOk)
 		val allCars = carRepository!!.findAll().filter { it.status == CarStatus.NOSLOTS }
