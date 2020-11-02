@@ -3,11 +3,10 @@ package energy.uniper.futuristiccarparkspringboot.pojo
 import energy.uniper.futuristiccarparkspringboot.model.Car
 import java.time.Duration
 import java.time.LocalDateTime
-import kotlin.math.round
 import kotlin.math.sqrt
 import kotlin.random.Random
 
-class Level (private val levelId: Int):InterfaceLevel{
+class NegativeLevel (private val levelId: Int):InterfaceLevel{
 	private val listParkinglots = mutableListOf<Car>()
 	override val isParkinglotAvailable = listParkinglots.count() < 20
 	

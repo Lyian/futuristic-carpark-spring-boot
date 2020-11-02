@@ -4,6 +4,7 @@ import energy.uniper.futuristiccarparkspringboot.enum.CarStatus
 import energy.uniper.futuristiccarparkspringboot.model.Car
 import energy.uniper.futuristiccarparkspringboot.pojo.InterfaceLevel
 import energy.uniper.futuristiccarparkspringboot.pojo.Level
+import energy.uniper.futuristiccarparkspringboot.pojo.NegativeLevel
 import energy.uniper.futuristiccarparkspringboot.repository.CarRepository
 import org.springframework.stereotype.Component
 import kotlin.math.floor
@@ -11,8 +12,7 @@ import kotlin.math.max
 import kotlin.random.Random
 
 @Component
-class CarParkService(val carRepository: CarRepository) {
-
+class CarParkService(val carRepository: CarRepository)  {
 	private val levels = mutableListOf<InterfaceLevel>()
 	private val calculateLevel = {maxLevels: Int, value: Double -> max((maxLevels - floor(value / 10_000)).toInt(),0)}
 	

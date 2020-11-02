@@ -26,15 +26,19 @@ class IntegrationTests {
 	
 	@Test
 	fun testParkedCarsExists(){
-		mvc!!.perform(get("http://localhost:8080/api/car/parkAll")).andExpect(status().isOk).andExpect(jsonPath("$").exists())
+		mvc!!
+			.perform(get("http://localhost:8080/api/car/parkAll"))
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$")
+				.exists())
 	}
 	
 	@Test // diskussion in memory database vs dockerized real database
 	fun testNoSlotsCarsExists(){
 		mvc!!.perform(get("http://localhost:8080/api/car/parkAll")).andExpect(status().isOk)
-		val allCars = carRepository!!.findAll().filter { it.status == CarStatus.NOSLOTS }
-		
+		val allCars = carRepository!!
+			.findAll()
+			.filter { it.status == CarStatus.NOSLOTS }
 		Assertions.assertFalse(allCars::isEmpty)
 	}
-
 }

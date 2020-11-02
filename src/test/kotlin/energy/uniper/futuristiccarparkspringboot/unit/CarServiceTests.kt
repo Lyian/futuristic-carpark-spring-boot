@@ -30,7 +30,7 @@ class CarServiceTests {
 	}
 	
 	@Test
-	fun testParkingACarStatus(){
+	fun testParkingACarStatusParked(){
 		Mockito.`when`(carRepository.findAll()).thenReturn(mutableListOf(sampleCar))
 		
 		val parkedCar = carParkService.parkCar()[0]
